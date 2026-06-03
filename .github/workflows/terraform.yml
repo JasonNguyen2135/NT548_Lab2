@@ -24,24 +24,20 @@ jobs:
 
     - name: Terraform Format
       run: terraform fmt -check
-      working-directory: terraform
 
     - name: Terraform Init
       run: terraform init
-      working-directory: terraform
 
     - name: Checkov GitHub Action
       uses: bridgecrewio/checkov-action@master
       with:
-        directory: terraform
+        directory: .
         quiet: true
         soft_fail: true # Set to true to allow pipeline to continue even if security checks fail
 
     - name: Terraform Plan
       run: terraform plan
-      working-directory: terraform
 
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
       run: terraform apply -auto-approve
-      working-directory: terraform
